@@ -1,2 +1,2 @@
-# cthaeh
+# Cthaeh
 Tak AI
