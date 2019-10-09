@@ -8,3 +8,8 @@ include_directories (
     source
     tests
 )
+
+set(TAK_SOURCES
+   source/main.cpp
+   source/Board.cpp
+)

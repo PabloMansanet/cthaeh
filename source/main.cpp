@@ -3,34 +3,8 @@
 #include <stdint.h>
 
 #include "imgui.h"
+#include "Board.h"
 #include "imgui-SFML.h"
-
-std::vector<sf::RectangleShape> CreateRectangles()
-{
-   const size_t gridSide = 7u;
-   const size_t vectorLength = gridSide * gridSide;
-   const sf::Vector2f rectanglesOrigin = sf::Vector2f(50.0, 50.0);
-   const sf::Vector2f rectangleDimensions = sf::Vector2f(100.0, 100.0);
-
-   auto rectangles = std::vector<sf::RectangleShape>(vectorLength);
-
-   for (size_t i = 0; i < rectangles.size(); i++) {
-      const size_t xPos = (i % gridSide);
-      const size_t yPos = (i / gridSide);
-
-      auto color = ((xPos + yPos) % 2 == 0) ? sf::Color::Cyan : sf::Color::White;
-      rectangles[i].setSize( rectangleDimensions );
-      rectangles[i].setFillColor( color );
-
-      const float xOffset = rectangleDimensions.x * xPos;
-      const float yOffset = rectangleDimensions.y * yPos;
-      const sf::Vector2f offset = sf::Vector2f(xOffset, yOffset);
-
-      rectangles[i].setPosition( rectanglesOrigin + offset );
-   }
-
-   return rectangles;
-}
 
 int main()
 {
@@ -45,9 +19,8 @@ int main()
    char windowTitle[255] = "TAK";
    window.setTitle(windowTitle);
    //window.resetGLStates(); // call it if you only draw ImGui. Otherwise not needed.
-
    sf::Clock deltaClock;
-   auto rectangles = CreateRectangles();
+   Board board = Board(5u, sf::Color::Red, sf::Color::Green);
 
    while (window.isOpen()) {
       sf::Event event;
@@ -72,9 +45,7 @@ int main()
       ImGui::End();
 
       window.clear(bgColor);
-      for (auto& rectangle: rectangles) {
-         window.draw(rectangle);
-      }
+      window.draw(board);
 
       ImGui::SFML::Render(window);
       window.display();
