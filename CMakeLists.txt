@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(cthaeh)
 enable_language(C CXX ASM)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_library(imgui imgui/imgui.cpp imgui/imgui_widgets.cpp imgui/imgui_draw.cpp)
 add_library(imgui-sfml imgui-sfml/imgui-SFML.cpp)
