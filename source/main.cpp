@@ -3,17 +3,27 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 
+std::vector<sf:RectangleShape> CreaterRectangle
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(640, 480), "ImGui + SFML = <3");
-    window.setFramerateLimit(60);
+    sf::RenderWindow window(sf::VideoMode(640, 480), "");
+    window.setVerticalSyncEnabled(true);
     ImGui::SFML::Init(window);
 
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+ 	sf::RectangleShape rectangulo(sf::Vector2f(200.f, 200.f));
+ 	rectangulo.setFillColor(sf::Color::Cyan);
+
+    sf::Color bgColor;
+
+    float color[3] = { 0.f, 0.f, 0.f };
+
+    char windowTitle[255] = "TAK";
+    window.setTitle(windowTitle);
+    //window.resetGLStates(); // call it if you only draw ImGui. Otherwise not needed.
 
     sf::Clock deltaClock;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -26,15 +36,24 @@ int main()
 
         ImGui::SFML::Update(window, deltaClock.restart());
 
-        ImGui::Begin("Hello, world!");
-        ImGui::Button("Look at this pretty button");
-        ImGui::End();
+        ImGui::Begin("Settings"); 
 
-        window.clear();
-        window.draw(shape);
+        if (ImGui::ColorEdit3("Background color", color)) {
+            bgColor.r = static_cast<sf::Uint8>(color[0] * 255.f);
+            bgColor.g = static_cast<sf::Uint8>(color[1] * 255.f);
+            bgColor.b = static_cast<sf::Uint8>(color[2] * 255.f);
+        }
+
+        ImGui::End(); 
+
+        window.clear(bgColor); 
+        rectangulo.setPosition( 400 , 400 );
+        window.draw(rectangulo);
+
         ImGui::SFML::Render(window);
         window.display();
     }
 
     ImGui::SFML::Shutdown();
 }
+	

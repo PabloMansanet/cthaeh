@@ -12,7 +12,6 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
-// Add this to your imconfig.h
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
