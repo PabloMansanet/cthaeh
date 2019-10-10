@@ -8,49 +8,59 @@
 
 int main()
 {
-   sf::RenderWindow window(sf::VideoMode(640, 480), "");
-   window.setVerticalSyncEnabled(true);
-   ImGui::SFML::Init(window);
+	int resX = 640;
+    int resY = 480;
+	sf::RenderWindow window(sf::VideoMode(640, 480), "");
 
-   sf::Color bgColor;
+	sf::View view;
+    view.setSize( resX, resY );
+    view.setCenter( view.getSize().x / 2, view.getSize().y / 2 );
+    view = getLetterboxView( view, resX, resY ); 
 
-   float color[3] = { 0.f, 0.f, 0.f };
+    window.setVerticalSyncEnabled(true);
+    ImGui::SFML::Init(window);
 
-   char windowTitle[255] = "TAK";
-   window.setTitle(windowTitle);
-   //window.resetGLStates(); // call it if you only draw ImGui. Otherwise not needed.
-   sf::Clock deltaClock;
-   Board board = Board(5u, sf::Color::Red, sf::Color::Green);
+    sf::Color greyish(43, 47, 59);
+    sf::Color blueish(139, 164, 243);	
 
-   while (window.isOpen()) {
-      sf::Event event;
-      while (window.pollEvent(event)) {
-         ImGui::SFML::ProcessEvent(event);
+    char windowTitle[255] = "TAK";
+    window.setTitle(windowTitle);
+    //window.resetGLStates(); // call it if you only draw ImGui. Otherwise not needed.
 
-         if (event.type == sf::Event::Closed) {
-            window.close();
-         }
-      }
+    sf::Clock deltaClock;
+    Board board = Board(5u, greyish, blueish);
 
-      ImGui::SFML::Update(window, deltaClock.restart());
+    while (window.isOpen()) {
+    	sf::Event event;
+        while (window.pollEvent(event)) {
+        	ImGui::SFML::ProcessEvent(event);
 
-      ImGui::Begin("Settings");
+        	if (event.type == sf::Event::Closed) {
+        		window.close();
+            }
 
-      if (ImGui::ColorEdit3("Background color", color)) {
-         bgColor.r = static_cast<sf::Uint8>(color[0] * 255.f);
-         bgColor.g = static_cast<sf::Uint8>(color[1] * 255.f);
-         bgColor.b = static_cast<sf::Uint8>(color[2] * 255.f);
-      }
+            if (event.type == sf::Event::Resized) {
+                view = getLetterboxView( view, event.size.width, event.size.height );
+            }
+        }
 
-      ImGui::End();
+        ImGui::SFML::Update(window, deltaClock.restart());
 
-      window.clear(bgColor);
-      window.draw(board);
+        ImGui::Begin("Settings");
 
-      ImGui::SFML::Render(window);
-      window.display();
-   }
+		//
+
+        ImGui::End();
+
+        window.clear();
+
+        window.setView(view);
+
+        window.draw(board);
+
+        ImGui::SFML::Render(window);
+        window.display();
+    }
 
    ImGui::SFML::Shutdown();
 }
-

@@ -12,6 +12,8 @@ public:
 
    void SetColors(sf::Color squareColorA, sf::Color squareColorB);
 
+   sf::View getLetterboxView(sf::View view, float windowWidth, float windowHeight);
+
 private:
    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
    std::vector<sf::RectangleShape> CreateRectangles(size_t size,
