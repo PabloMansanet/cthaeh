@@ -53,24 +53,3 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
       target.draw(rectangle, states);
    }
 }
-
-sf::View getLetterboxView(sf::View view, float windowWidth, float windowHeight) 
-{
-
-    float windowRatio = windowWidth / windowHeight;
-    float viewRatio = view.getSize().x / view.getSize().y;
-    const size_t size = viewRatio / windowRatio;
-    const size_t yPos;
-    const size_t xPos;
-
-    bool horizontalSpacing = true;
-    if (windowRatio < viewRatio) horizontalSpacing = false;
-
-    if (horizontalSpacing) xPos = (1 - size) / 2.f;
-
-    else yPos = (1 - size) / 2.f; 
-
-    view.setViewport( sf::FloatRect(xPos, yPos, size) );
-
-    return view;
-}
